@@ -1,8 +1,9 @@
 var express = require('express');
 var cors = require('cors');
 require('dotenv').config();
-// 
+// Use multer to handle file uploading
 const multer  = require('multer')
+// Set the file upload destination to the ./uploads folder
 const upload = multer({ dest: 'uploads/' })
 
 var app = express();
@@ -14,6 +15,7 @@ app.get('/', function (req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
 
+// Allows file upload at route /api/fileanalyse. Then responds with name, type and size in JSON.
 app.post('/api/fileanalyse', upload.single('upfile'), (req, res, next) => {
   res.json({name: req.file.originalname, type: req.file.mimetype, size: req.file.size})
   console.log(req.file);
